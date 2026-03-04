@@ -114,7 +114,7 @@ func retype(tasks []Task, scanner *bufio.Scanner) []Task {
 		return tasks
 	}
 	if command >= len(commands) || command < 0 {
-		fmt.Printf("нет такой команды")
+		fmt.Println("нет такой команды")
 		return tasks
 	}
 	commands[command]()
