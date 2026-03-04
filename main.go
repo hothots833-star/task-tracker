@@ -24,7 +24,7 @@ func change(file *os.File, tasks []Task) error {
 	encoder := json.NewEncoder(file)
 	encoder.SetIndent("", "  ")
 	if err := encoder.Encode(tasks); err != nil {
-		return fmt.Errorf("ошибка енкодинга файла: %v", err)
+		return fmt.Errorf("ошибка енкодинга файла: %v\n", err)
 	}
 	return nil
 }
@@ -37,14 +37,14 @@ func newTask(tasks []Task, scanner *bufio.Scanner) []Task {
 	if scanner.Scan() {
 		taskName = scanner.Text()
 	} else {
-		fmt.Printf("ошибка сканера")
+		fmt.Println("ошибка сканера")
 		return tasks
 	}
 	fmt.Print("введи статус таска: ")
 	if scanner.Scan() {
 		taskStatus = scanner.Text()
 	} else {
-		fmt.Printf("ошибка сканера")
+		fmt.Println("ошибка сканера")
 		return tasks
 	}
 	tasks = append(tasks, Task{taskName, taskStatus, time.Now().Format("2006-01-02 15:04")})
@@ -58,14 +58,14 @@ func deleteTask(tasks []Task, scanner *bufio.Scanner) []Task {
 	if scanner.Scan() {
 		line, err = strconv.Atoi(strings.TrimSpace(scanner.Text()))
 		if err != nil {
-			fmt.Printf("ошибка чтения номера таска (возможно вы ввели не числоа: %v)", err)
+			fmt.Printf("ошибка чтения номера таска (возможно вы ввели не числоа: %v)\n", err)
 			return tasks
 		}
 	} else {
-		fmt.Printf("ошибка сканера")
+		fmt.Println("ошибка сканера")
 	}
 	if line >= len(tasks) || line < 0 {
-		fmt.Printf("ошибка: нет такой строки")
+		fmt.Println("ошибка: нет такой строки")
 		return tasks
 	}
 	tasks = append(tasks[:line], tasks[line+1:]...)
@@ -94,11 +94,11 @@ func retype(tasks []Task, scanner *bufio.Scanner) []Task {
 	if scanner.Scan() {
 		line, err = strconv.Atoi(strings.TrimSpace(scanner.Text()))
 		if err != nil {
-			fmt.Printf("ошибка чтения строки (возможно вы ввели не число): %v", err)
+			fmt.Printf("ошибка чтения строки (возможно вы ввели не число): %v\n", err)
 			return tasks
 		}
 		if line >= len(tasks) || line < 0 {
-			fmt.Printf("ошибка:  нет такой строки")
+			fmt.Println("ошибка:  нет такой строки")
 			return tasks
 		}
 	}
@@ -106,11 +106,11 @@ func retype(tasks []Task, scanner *bufio.Scanner) []Task {
 	if scanner.Scan() {
 		command, err = strconv.Atoi(strings.TrimSpace(scanner.Text()))
 		if err != nil {
-			fmt.Printf("ошибка чтения строки (возможно вы ввели не число): %v", err)
+			fmt.Printf("ошибка чтения строки (возможно вы ввели не число): %v\n", err)
 			return tasks
 		}
 	} else {
-		fmt.Printf("ошибка сканера")
+		fmt.Println("ошибка сканера")
 		return tasks
 	}
 	if command >= len(commands) || command < 0 {
@@ -152,12 +152,12 @@ func main() {
 	}
 	jsonFile, err := os.ReadFile("tasks.json")
 	if err != nil {
-		fmt.Printf("ошибка чтения файла: %v", err)
+		fmt.Printf("ошибка чтения файла: %v\n", err)
 		return
 	}
 	err = json.Unmarshal(jsonFile, &tasks)
 	if err != nil {
-		fmt.Printf("ошибка унмаршалинга: %v", err)
+		fmt.Printf("ошибка унмаршалинга: %v\n", err)
 		return
 	}
 	var command int
@@ -183,21 +183,21 @@ func main() {
 		if scanner.Scan() {
 			command, err = strconv.Atoi(strings.TrimSpace(scanner.Text()))
 			if err != nil {
-				fmt.Printf("ошибка чтения номера команды (возможно вы ввели не число): %v", err)
+				fmt.Printf("ошибка чтения номера команды (возможно вы ввели не число): %v\n", err)
 				continue
 			}
 		} else {
-			fmt.Printf("ошибка сканера")
+			fmt.Println("ошибка сканера")
 			return
 		}
 		if command >= len(commandList) || command < 0 {
-			fmt.Printf("ошибка: нет такой команды")
+			fmt.Println("ошибка: нет такой команды")
 			continue
 		}
 		commandList[command].run()
 		file, err := os.Create("tasks.json")
 		if err != nil {
-			fmt.Printf("ошибка открытия файла: %v", err)
+			fmt.Printf("ошибка открытия файла: %v\n", err)
 			continue
 		}
 		if err = change(file, tasks); err != nil {
