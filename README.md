@@ -1,4 +1,3 @@
-простая cli-утилита для отслеживания своих задач<br>
-при запуске программа сразу предложит вам выбрать команду из списка<br>
-в этом проекте использовались такие технологии, как: Go (Golang), JSON (для хранения задач), стандартная библиотека Go (os, bufio, encoding/json, strconv,
-strings, time, fmt), Git
+A simple CLI utility for tracking your tasks.<br>
+When launched, the program will immediately prompt you to choose a command from the list.<br>
+This project uses the following technologies: Go (Golang), JSON (for storing tasks), Go standard library (os, bufio, encoding/json, strconv, strings, time, fmt), Git
